@@ -1,0 +1,490 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{url}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    tabsize=4
+}
+
+\lstset{style=mystyle}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+}
+
+\title{Traffic Management System: Real-Time Event Processing with PostgreSQL}
+\author{Dheeraj Murthy}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report documents a real-time traffic management system built using PostgreSQL LISTEN/NOTIFY for event-driven communication. The system consists of three components: a C++ event watcher that listens for database notifications, a Go REST API server for the traffic dashboard, and PostgreSQL triggers for reactive traffic logic. The system parses ECA (Event-Condition-Action) rules from XML and processes sensor and signal events in real-time.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+Modern traffic management systems require real-time processing of sensor data and signal updates. This project implements an event-driven architecture using PostgreSQL's LISTEN/NOTIFY mechanism for immediate notification when database state changes occur.
+
+\subsection{Objectives}
+\begin{itemize}
+    \item Real-time sensor data processing (vehicle count, average speed)
+    \item Signal phase management and timing control
+    \item Junction event handling (phase changes, queue overflow, emergencies)
+    \item Corridor-based traffic flow optimization
+    \item ECA rule engine for automated responses
+\end{itemize}
+
+\section{System Architecture}
+
+\subsection{Component Overview}
+
+\begin{figure}[H]
+\centering
+\fbox{
+\parbox{0.8\textwidth}{
+\textbf{Architecture Flow:}
+\newline\newline
+PostgreSQL Database $\rightarrow$ C++ Watcher $\rightarrow$ Event Handlers
+\newline\newline
+C++ Watcher $\leftrightarrow$ Go API Server
+}}
+\end{figure}
+\bigskip
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll} \toprule
+Component & Language & Purpose \\ \midrule
+Watcher & C++20 & PostgreSQL listener, event dispatcher \\
+Server & Go 1.25 & REST API for dashboard \\
+Database & PostgreSQL & Schema, triggers, reactive logic \\ \bottomrule
+\end{tabular}
+\caption{Component Summary}
+\end{table}
+
+\subsection{Directory Structure}
+
+\begin{lstlisting}[language=bash,style=mystyle]
+project/
+├── AGENTS.md           # Project knowledge base
+├── server/            # Go API server
+│   └── main.go
+├── sql/              # PostgreSQL schema
+│   ├── db_create.sql
+│   ├── db_data.sql
+│   └── xml/
+│       └── eca-rules-example.xml
+└── watcher/          # C++ event watcher
+    ├── CMakeLists.txt
+    ├── include/watcher/
+    │   ├── config.hpp
+    │   ├── connection.hpp
+    │   ├── dispatcher.hpp
+    │   ├── listener.hpp
+    │   └── rules/
+    │       └── rule_loader.hpp
+    └── src/
+        ├── main.cpp
+        ├── config.cpp
+        ├── connection.cpp
+        ├── listener.cpp
+        ├── dispatcher.cpp
+        ├── rules/
+        │   └── rule_loader.cpp
+        └── handlers/
+            ├── sensor_handler.cpp
+            └── signal_handler.cpp
+\end{lstlisting}
+
+\section{Database Layer}
+
+PostgreSQL serves as the event source with triggers emitting NOTIFY events.
+
+\subsection{Event Channels}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll} \toprule
+Channel & Event Type \\ \midrule
+sensor\_update\_channel & Vehicle count, speed data \\
+signal\_update\_channel & Phase changes, timing \\
+junction\_event\_channel & Junction-specific events \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Sample trigger:
+\begin{lstlisting}[language=SQL,style=mystyle]
+CREATE TRIGGER sensor_update_trigger
+AFTER INSERT ON sensor_data
+FOR EACH ROW
+EXECUTE FUNCTION notify_sensor_update();
+\end{lstlisting}
+
+\section{Event Watcher (C++)}
+
+The C++ watcher connects to PostgreSQL and listens for NOTIFY events.
+
+\subsection{Build System (CMake)}
+
+\begin{lstlisting}[language=CMake,style=mystyle]
+cmake_minimum_required(VERSION 3.16)
+project(sql_watcher VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(PostgreSQL_ROOT "/opt/homebrew/opt/postgresql@17")
+find_package(PostgreSQL REQUIRED)
+
+include(FetchContent)
+FetchContent_Declare(json GIT_REPOSITORY https://github.com/nlohmann/json.git ...)
+FetchContent_MakeAvailable(json)
+
+FetchContent_Declare(pugixml ...)
+FetchContent_MakeAvailable(pugixml)
+
+add_executable(watcher ${SOURCES})
+target_link_libraries(watcher PostgreSQL::PostgreSQL nlohmann_json pugixml pthread)
+\end{lstlisting}
+
+\subsection{Main Entry Point}
+
+\begin{lstlisting}[language=C++,style=mystyle]
+#include "watcher/config.hpp"
+#include "watcher/connection.hpp"
+#include "watcher/dispatcher.hpp"
+#include "watcher/handlers/sensor_handler.hpp"
+#include "watcher/handlers/signal_handler.hpp"
+#include "watcher/listener.hpp"
+#include "watcher/rules/rule_loader.hpp"
+
+int main() {
+    auto config = watcher::Config::fromEnv();
+    config.dbname = "traffic_db";
+    config.user = "dheerajmurthy";
+    config.password = "dheeraj";
+
+    watcher::Connection conn(config.connectionString());
+    std::cout << "Connected.\n";
+
+    watcher::RuleLoader rule_loader;
+    rule_loader.load_from_file("eca-rules.xml");
+    std::cout << "Loaded " << rule_loader.rules().size() << " rules\n";
+
+    watcher::EventDispatcher dispatcher;
+    dispatcher.registerHandler("sensor_update_channel", 
+        std::make_unique<watcher::SensorHandler>());
+    dispatcher.registerHandler("signal_update_channel", 
+        std::make_unique<watcher::SignalHandler>());
+
+    conn.listen("sensor_update_channel");
+    conn.listen("signal_update_channel");
+    conn.listen("junction_event_channel");
+
+    watcher::Listener listener(conn, dispatcher);
+    listener.start();
+
+    std::cout << "Listening for events... (Ctrl+C to exit)\n";
+    // Main loop...
+}
+\end{lstlisting}
+
+\subsection{Event Dispatcher Pattern}
+
+\begin{lstlisting}[language=C++,style=mystyle]
+class EventHandler {
+public:
+    virtual ~EventHandler() = default;
+    virtual void handle(const std::string& channel, const json& data) = 0;
+    virtual std::string name() const = 0;
+};
+
+class EventDispatcher {
+public:
+    void registerHandler(const std::string& channel, HandlerPtr handler);
+    void dispatch(const std::string& channel, const std::string& payload);
+};
+\end{lstlisting}
+
+Handler implementation:
+\begin{lstlisting}[language=C++,style=mystyle]
+class SensorHandler : public EventHandler {
+public:
+    std::string name() const override { return "SensorHandler"; }
+    
+    void handle(const std::string& channel, const json& data) override {
+        std::cout << "Processing sensor update...\n";
+        std::cout << "  Data: " << data.dump(2) << "\n";
+    }
+};
+\end{lstlisting}
+
+\section{ECA Rule Engine}
+
+The system loads Event-Condition-Action rules from XML using pugixml.
+
+\subsection{Rule Schema (XSD)}
+
+\begin{lstlisting}[language=XML,style=mystyle]
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="eca-rules" type="tns:EcaRulesType"/>
+  <xsd:complexType name="EcaRulesType">
+    <xsd:sequence>
+      <xsd:element name="rule" type="tns:RuleType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="version" type="xsd:string"/>
+    <xsd:attribute name="enabled" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="RuleType">
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:element name="event" type="tns:EventType"/>
+      <xsd:element name="condition" type="tns:ConditionType"/>
+      <xsd:element name="action" type="tns:ActionType"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID"/>
+    <xsd:attribute name="priority" type="xsd:int"/>
+    <xsd:attribute name="enabled" type="xsd:boolean"/>
+  </xsd:complexType>
+</xsd:schema>
+\end{lstlisting}
+
+\subsection{Example Rules}
+
+\begin{lstlisting}[language=XML,style=mystyle]
+<?xml version="1.0" encoding="UTF-8"?>
+<eca-rules version="1.0" enabled="true">
+  <rule id="rule-001" priority="10" enabled="true">
+    <name>High Traffic Response</name>
+    <description>When queue exceeds 40, extend green time</description>
+    <event>
+      <sensor-update vehicle-count-min="41"/>
+    </event>
+    <condition>
+      <queue-threshold threshold="40" comparison="gt"/>
+    </condition>
+    <action>
+      <set-phase-timing green-time="90" is-active="true"/>
+    </action>
+  </rule>
+  
+  <rule id="rule-002" priority="5" enabled="true">
+    <name>Low Traffic Optimization</name>
+    <event>
+      <sensor-update vehicle-count-max="9"/>
+    </event>
+    <condition>
+      <queue-threshold threshold="10" comparison="lt"/>
+    </condition>
+    <action>
+      <adjust-green-time adjustment-seconds="-10"/>
+    </action>
+  </rule>
+</eca-rules>
+\end{lstlisting}
+
+Rule loader header:
+\begin{lstlisting}[language=C++,style=mystyle]
+enum class EventType {
+    SENSOR_UPDATE,
+    JUNCTION_EVENT,
+    TIME_SCHEDULE,
+    CORRIDOR_EVENT,
+    UNKNOWN
+};
+
+enum class SignalMode {
+    DYNAMIC, PERIODIC, MANUAL, ECA_CONTROLLED
+};
+
+struct EcaRule {
+    std::string id;
+    int priority = 0;
+    bool enabled = false;
+    std::string name;
+    EventType event_type;
+    std::vector<Action> actions;
+};
+
+class RuleLoader {
+public:
+    bool load_from_file(const std::string& path);
+    const std::vector<EcaRule>& rules() const;
+    std::vector<const EcaRule*> find_matching_rules(EventType type) const;
+};
+\end{lstlisting}
+
+\section{API Server (Go)}
+
+\begin{lstlisting}[language=Go,style=mystyle]
+package main
+
+import (
+    "database/sql"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "github.com/lib/pq"
+)
+
+type SensorData struct {
+    SensorID     int     `json:"sensor_id"`
+    ApproachID   int     `json:"approach_id"`
+    VehicleCount int     `json:"vehicle_count"`
+    AvgSpeed     float64 `json:"avg_speed"`
+    Timestamp   string  `json:"timestamp"`
+}
+
+func main() {
+    db, _ := sql.Open("postgres", 
+        "user=dheerajmurthy dbname=traffic_db password=dheeraj")
+    defer db.Close()
+
+    http.HandleFunc("/api/sensors", func(w http.ResponseWriter, r *http.Request) {
+        rows, _ := db.Query("SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 10")
+        // Encode and return JSON...
+    })
+
+    fmt.Println("Server starting on :8080")
+    http.ListenAndServe(":8080", nil)
+}
+\end{lstlisting}
+
+\section{Running the System}
+
+\subsection{Setup}
+
+\begin{enumerate}
+    \item PostgreSQL running with traffic\_db
+    \item C++20 compiler
+    \item Go 1.25+
+\end{enumerate}
+
+\subsection{Database Setup}
+
+\begin{lstlisting}[language=bash,style=mystyle]
+createdb traffic_db
+psql -d traffic_db -f sql/db_create.sql
+psql -d traffic_db -f sql/db_data.sql
+\end{lstlisting}
+
+\subsection{Build and Run Watcher}
+
+\begin{lstlisting}[language=bash,style=mystyle]
+cd watcher/build
+cmake .. && make -j4
+./watcher
+\end{lstlisting}
+
+Expected output:
+\begin{verbatim}
+Connecting to traffic_db...
+Connected.
+Loaded 9 rules (version 1.0)
+  - [rule-001] High Traffic Response (priority 10)
+  - [rule-002] Low Traffic Optimization (priority 5)
+  ...
+Listening for events... (Ctrl+C to exit)
+\end{verbatim}
+
+Sample event from running system:
+\begin{verbatim}
+[sensor_update_channel] {"type": "SENSOR_UPDATE", "sensor_id": 1, 
+                        "approach_id": 1, "vehicle_count": 18}
+Processing sensor update...
+  Data: {
+    "sensor_id": 1,
+    "approach_id": 1,
+    "vehicle_count": 18
+  }
+
+[junction_event_channel] {"type": "ACTIVE_PHASE_CHANGE", 
+                        "junction_id": 1, "phase_id": 1}
+Processing junction event...
+\end{verbatim}
+
+\section{System Diagram (Architecture)}
+
+\begin{verbatim}
++----------+     +----------+     +------------+
+| Sensor   |---->| PostgreSQL|---->| C++ Watcher|
+| Devices  |     |  DB      |     | (Listener) |
++----------+     +----------+     +------------+
+                                  |
+                                  v (NOTIFY)
+                             +-----------+
+                             | Dispatcher|
+                             +-----------+
+                                  |
+                    +-------------+-------------+
+                    |             |             |
+              +-----+-----+ +-----+-----+ +-----+-----+
+              |Sensor   | |Signal   | |Junction |
+              |Handler  | |Handler | |Handler |
+              +---------+ +---------+ +---------+
+                    |
+                    v
+              +-----------+
+              | ECA Rules |
+              +-----------+
+                    |
+                    v
+              +----------------+
+              | Action Execute|
+              +----------------+
+\end{verbatim}
+
+\section{Future Improvements}
+
+\begin{itemize}
+    \item Connect handlers to ECA rules for automatic response
+    \item Add time-window aggregation for sensor data
+    \item Implement adaptive signal timing algorithms
+    \item Add Prometheus metrics endpoint
+    \item WebSocket API for real-time dashboard
+    \item Unit tests for handlers
+\end{itemize}
+
+\section{Conclusion}
+
+This traffic management system demonstrates event-driven architecture using PostgreSQL LISTEN/NOTIFY. The modular design allows independent scaling of components while maintaining real-time responsiveness.
+
+\bigskip
+\textbf{Technologies Used:}
+\begin{itemize}
+    \item PostgreSQL 17 (NOTIFY, triggers, stored functions)
+    \item C++20 (watcher with pugixml, nlohmann-json)
+    \item Go 1.25 (REST API server)
+    \item CMake (build system)
+\end{itemize}
+
+\end{document}

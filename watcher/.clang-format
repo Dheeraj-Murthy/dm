@@ -1,0 +1,15 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+ColumnLimit: 120
+ReflowComments: false
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+BreakBeforeBraces: Attach
+IndentWidth: 4
+MaxEmptyLinesToKeep: 1
+SpacesInParentheses: false
+SpacesInSquareBrackets: false

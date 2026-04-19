@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eca-rules version="1.0" enabled="true" xmlns="http://traffic.example.com/eca">
+
+  <!-- HIGH TRAFFIC RULE: When queue > 40 at any approach, extend green time -->
+  <rule id="rule-001" priority="10" enabled="true">
+    <name>High Traffic Response</name>
+    <description>When queue exceeds 40 vehicles, extend green time to maximum</description>
+    <event>
+      <sensor-update vehicle-count-min="41"/>
+    </event>
+    <condition>
+      <queue-threshold threshold="40" comparison="gt"/>
+    </condition>
+    <action>
+      <set-phase-timing approach-id="{CONTEXT_APPROACH_ID}" green-time="90" is-active="true"/>
+    </action>
+  </rule>
+
+  <!-- LOW TRAFFIC RULE: When queue < 10, reduce green time to minimum -->
+  <rule id="rule-002" priority="5" enabled="true">
+    <name>Low Traffic Optimization</name>
+    <description>When queue below 10, reduce green time to minimum</description>
+    <event>
+      <sensor-update vehicle-count-max="9"/>
+    </event>
+    <condition>
+      <queue-threshold threshold="10" comparison="lt"/>
+    </condition>
+    <action>
+      <adjust-green-time approach-id="{CONTEXT_APPROACH_ID}" adjustment-seconds="-10" min-green="15" max-green="60"/>
+    </action>
+  </rule>
+
+  <!-- RUSH HOUR RULE: Morning/Evening rush hour corridor free mode -->
+  <rule id="rule-003" priority="20" enabled="true">
+    <name>Rush Hour Corridor</name>
+    <description>Enable corridor free mode during morning rush hour</description>
+    <event>
+      <time-schedule cron="0 7 * * 1-5"/>
+    </event>
+    <condition>
+      <time-range start="07:00" end="09:30" days="1-5"/>
+    </condition>
+    <action>
+      <enable-corridor-free corridor-id="1" green-time="60"/>
+    </action>
+  </rule>
+
+  <!-- EVENING RUSH HOUR -->
+  <rule id="rule-004" priority="20" enabled="true">
+    <name>Evening Rush Hour Corridor</name>
+    <description>Enable corridor free mode during evening rush hour</description>
+    <event>
+      <time-schedule cron="0 16 * * 1-5"/>
+    </event>
+    <condition>
+      <time-range start="16:30" end="19:00" days="1-5"/>
+    </condition>
+    <action>
+      <enable-corridor-free corridor-id="1" green-time="60"/>
+      <enable-corridor-free corridor-id="2" green-time="60"/>
+    </action>
+  </rule>
+
+  <!-- NIGHT MODE: Reset to dynamic after midnight -->
+  <rule id="rule-005" priority="1" enabled="true">
+    <name>Night Mode Reset</name>
+    <description>Reset to dynamic mode late night</description>
+    <event>
+      <time-schedule cron="0 0 * * *"/>
+    </event>
+    <condition>
+      <time-range start="00:00" end="05:00"/>
+    </condition>
+    <action>
+      <reset-to-dynamic/>
+    </action>
+  </rule>
+
+  <!-- CONGESTION RULE: Enable corridor free when corridor congestion detected -->
+  <rule id="rule-006" priority="15" enabled="true">
+    <name>Corridor Congestion Response</name>
+    <description>When corridor congestion detected, enable free corridor</description>
+    <event>
+      <corridor-event event-type="congestion-detected"/>
+    </event>
+    <action>
+      <enable-corridor-free corridor-id="{CONTEXT_CORRIDOR_ID}" green-time="90"/>
+    </action>
+  </rule>
+
+  <!-- APPROACH SPECIFIC: High queue at specific approach -->
+  <rule id="rule-007" priority="12" enabled="true">
+    <name>Main Street High Traffic</name>
+    <description>Special handling for main street approach</description>
+    <event>
+      <sensor-update approach-id="1"/>
+    </event>
+    <condition>
+      <queue-threshold approach-id="1" threshold="30" comparison="gte"/>
+    </condition>
+    <action>
+      <set-active-phase approach-id="1" green-time="45"/>
+    </action>
+  </rule>
+
+  <!-- MANUAL OVERRIDE MONITOR: Log when manual override occurs -->
+  <rule id="rule-008" priority="0" enabled="true">
+    <name>Manual Override Alert</name>
+    <description>Log and notify on manual override</description>
+    <event>
+      <junction-event event-type="manual-override"/>
+    </event>
+    <action>
+      <set-mode mode="MANUAL"/>
+    </action>
+  </rule>
+
+  <!-- DEFAULT FALLBACK: If no rules match, use dynamic mode -->
+  <rule id="rule-999" priority="-1" enabled="false">
+    <name>Default Fallback</name>
+    <description>Fallback to dynamic mode when no rules match</description>
+    <event>
+      <time-schedule interval-seconds="60"/>
+    </event>
+    <action>
+      <reset-to-dynamic/>
+    </action>
+  </rule>
+
+</eca-rules>

@@ -1,0 +1,24 @@
+flowchart TB
+    subgraph DB["PostgreSQL Database"]
+        TR["Triggers"]
+        NOTIFY["NOTIFY Events"]
+    end
+    
+    subgraph WATCHER["C++ Watcher"]
+        LISTENER["Listener Thread"]
+        DISP["Dispatcher"]
+        HANDLERS["Event Handlers"]
+    end
+    
+    subgraph API["Go Server"]
+        ROUTES["REST Routes"]
+        API_DB["Database Queries"]
+    end
+    
+    DB --> NOTIFY
+    NOTIFY --> LISTENER
+    LISTENER --> DISP
+    DISP --> HANDLERS
+    
+    API --> API_DB
+    API -.-> WATCHER
