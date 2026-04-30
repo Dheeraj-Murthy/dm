@@ -92,8 +92,8 @@ PostgreSQL (Triggers) → NOTIFY → C++ Watcher (Listener → Dispatcher → Ha
 
 ```bash
 createdb traffic_db
-psql -U dheerajmurthy -d traffic_db -f sql/db_create.sql
-psql -U dheerajmurthy -d traffic_db -f sql/db_data.sql
+psql -U <username> -d traffic_db -f sql/db_create.sql
+psql -U <username> -d traffic_db -f sql/db_data.sql
 ```
 
 ### 3. Build Watcher
@@ -135,7 +135,7 @@ cd server && go run main.go
 
 ```bash
 # In another terminal - trigger sample events
-psql -U dheerajmurthy -d traffic_db -f sql/db_watcher_test.sql
+psql -U <username> -d traffic_db -f sql/db_watcher_test.sql
 ```
 
 Watcher output:
