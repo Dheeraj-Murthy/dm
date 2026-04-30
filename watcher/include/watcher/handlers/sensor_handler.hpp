@@ -10,7 +10,7 @@ class SensorHandler : public EventHandler {
 public:
     std::string name() const override { return "SensorHandler"; }
     void handle(const std::string& channel, const json& data,
-                const RuleLoader& rules) override;
+                const RuleLoader& rules, Connection& conn) override;
 };
 
 }

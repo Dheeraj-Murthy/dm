@@ -4,6 +4,7 @@
 #include <map>
 #include <nlohmann/json.hpp>
 #include <string>
+#include "watcher/connection.hpp"
 #include "watcher/rules/rule_loader.hpp"
 
 namespace watcher {
@@ -14,7 +15,7 @@ class EventHandler {
 public:
   virtual ~EventHandler() = default;
   virtual void handle(const std::string &channel, const json &data,
-                      const RuleLoader &rules) = 0;
+                      const RuleLoader &rules, Connection &conn) = 0;
   virtual std::string name() const = 0;
 };
 
@@ -24,6 +25,7 @@ public:
   using HandlerFactory = std::function<HandlerPtr()>;
 
   void setRuleLoader(const RuleLoader *rules) { rules_ = rules; }
+  void setConnection(Connection *conn) { conn_ = conn; }
 
   void registerHandler(const std::string &channel, HandlerPtr handler);
   void registerFactory(const std::string &channel, HandlerFactory factory);
@@ -31,6 +33,7 @@ public:
 
 private:
   const RuleLoader *rules_ = nullptr;
+  Connection *conn_ = nullptr;
   std::map<std::string, HandlerPtr> handlers_;
   std::map<std::string, HandlerFactory> factories_;
 };

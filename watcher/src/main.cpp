@@ -57,6 +57,7 @@ int main() {
 
         watcher::EventDispatcher dispatcher;
         dispatcher.setRuleLoader(&rule_loader);
+        dispatcher.setConnection(&conn);
         dispatcher.registerHandler("sensor_update_channel", std::make_unique<watcher::SensorHandler>());
         dispatcher.registerHandler("signal_update_channel", std::make_unique<watcher::SignalHandler>());
 

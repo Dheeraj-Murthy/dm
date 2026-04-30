@@ -16,7 +16,7 @@ void EventDispatcher::dispatch(const std::string &channel, const std::string &pa
     if (it != handlers_.end()) {
         try {
             json data = json::parse(payload);
-            it->second->handle(channel, data, *rules_);
+            it->second->handle(channel, data, *rules_, *conn_);
         } catch (const std::exception &e) {
             std::cerr << "Failed to parse JSON: " << e.what() << "\n";
         }
