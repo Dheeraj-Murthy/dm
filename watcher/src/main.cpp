@@ -39,8 +39,11 @@ int main() {
             rules_path = config.rules_path;
         } else {
             const char *cwd = std::getenv("WATCHER_ROOT");
-            rules_path = cwd ? std::string(cwd) + "/sql/xml/eca-rules-example.xml"
-                             : "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/sql/xml/eca-rules-example.xml";
+            if (cwd) {
+                rules_path = std::string(cwd) + "/sql/xml/eca-rules-example.xml";
+            } else {
+                rules_path = "../../sql/xml/eca-rules-example.xml";
+            }
         }
         if (rule_loader.load_from_file(rules_path)) {
             std::cout << "Loaded " << rule_loader.rules().size() << " rules (version " << rule_loader.version()
