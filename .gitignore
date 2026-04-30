@@ -101,57 +101,16 @@ jest-cache/
 *.tgz
 *.tar.gz
 *.zip
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CMakeFiles/
+_deps/
+build/
+*.so
+*.dylib
+*.a
 
-# =========================
-# AI / Agent related files
-# =========================
-AGENTS.md
-agents/
-.prompts/
-.prompt-cache/
-.llm/
-.cursor/
-.cursorrules
-.claude/
-.claude-cache/
-.opencode/
-.opencode-cache/
-
-# =========================
-# Secrets
-# =========================
-*.pem
-*.key
-*.crt
-*.p12
-*.pfx
-
-# =========================
-# Database files
-# =========================
-*.sqlite
-*.sqlite3
-*.db
-
-# =========================
-# Docker
-# =========================
-.docker/
-docker-compose.override.yml
-
-# =========================
-# Local dev data
-# =========================
-uploads/
-data/
-storage/
-
-# =========================
-# Misc
-# =========================
-*.bak
-*.backup
-*.old
 # =========================
 # Node.js / Package Managers
 # =========================
@@ -221,6 +180,7 @@ Desktop.ini
 *.swn
 *.sublime-workspace
 *.sublime-project
+AGENTS.md
 
 # macOS
 .AppleDouble

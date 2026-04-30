@@ -1,6 +1,7 @@
 #pragma once
 
 #include "watcher/dispatcher.hpp"
+#include "watcher/rules/rule_loader.hpp"
 #include <iostream>
 
 namespace watcher {
@@ -8,13 +9,8 @@ namespace watcher {
 class SignalHandler : public EventHandler {
 public:
     std::string name() const override { return "SignalHandler"; }
-    
-    void handle(const std::string& channel, const json& data) override {
-        (void)channel;
-        (void)data;
-        std::cout << "Processing signal update...\n";
-        std::cout << "  Data: " << data.dump(2) << "\n";
-    }
+    void handle(const std::string& channel, const json& data,
+                const RuleLoader& rules) override;
 };
 
 }

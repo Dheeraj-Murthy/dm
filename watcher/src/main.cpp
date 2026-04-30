@@ -42,7 +42,7 @@ int main() {
             if (cwd) {
                 rules_path = std::string(cwd) + "/sql/xml/eca-rules-example.xml";
             } else {
-                rules_path = "../../sql/xml/eca-rules-example.xml";
+                rules_path = "../sql/xml/eca-rules-example.xml";
             }
         }
         if (rule_loader.load_from_file(rules_path)) {
@@ -56,6 +56,7 @@ int main() {
         }
 
         watcher::EventDispatcher dispatcher;
+        dispatcher.setRuleLoader(&rule_loader);
         dispatcher.registerHandler("sensor_update_channel", std::make_unique<watcher::SensorHandler>());
         dispatcher.registerHandler("signal_update_channel", std::make_unique<watcher::SignalHandler>());
 
