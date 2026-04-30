@@ -1,189 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:tns="http://traffic.example.com/eca"
-            targetNamespace="http://traffic.example.com/eca"
-            elementFormDefault="qualified">
+    xmlns:tns="http://traffic.example.com/eca"
+    targetNamespace="http://traffic.example.com/eca"
+    elementFormDefault="qualified">
 
-  <xsd:element name="eca-rules" type="tns:EcaRulesType"/>
+    <xsd:element name="eca-rules" type="tns:EcaRulesType" />
 
-  <xsd:complexType name="EcaRulesType">
-    <xsd:sequence>
-      <xsd:element name="rule" type="tns:RuleType" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="version" type="xsd:string" default="1.0"/>
-    <xsd:attribute name="enabled" type="xsd:boolean" default="true"/>
-  </xsd:complexType>
+    <xsd:complexType name="EcaRulesType">
+        <xsd:sequence>
+            <xsd:element name="rule" type="tns:RuleType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="version" type="xsd:string" default="1.0" />
+        <xsd:attribute name="enabled" type="xsd:boolean" default="true" />
+    </xsd:complexType>
 
-  <xsd:complexType name="RuleType">
-    <xsd:sequence>
-      <xsd:element name="name" type="xsd:string"/>
-      <xsd:element name="description" type="xsd:string" minOccurs="0"/>
-      <xsd:element name="event" type="tns:EventType"/>
-      <xsd:element name="condition" type="tns:ConditionType" minOccurs="0"/>
-      <xsd:element name="action" type="tns:ActionType" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="id" type="xsd:ID" use="required"/>
-    <xsd:attribute name="priority" type="xsd:int" default="0"/>
-    <xsd:attribute name="enabled" type="xsd:boolean" default="true"/>
-  </xsd:complexType>
+    <xsd:complexType name="RuleType">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="event" type="tns:EventType" />
+            <xsd:element name="condition" type="tns:ConditionType" minOccurs="0" />
+            <xsd:element name="action" type="tns:ActionType" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:ID" use="required" />
+        <xsd:attribute name="priority" type="xsd:int" default="0" />
+        <xsd:attribute name="enabled" type="xsd:boolean" default="true" />
+    </xsd:complexType>
 
-  <xsd:complexType name="EventType">
-    <xsd:choice>
-      <xsd:element name="sensor-update" type="tns:SensorEventType"/>
-      <xsd:element name="junction-event" type="tns:JunctionEventType"/>
-      <xsd:element name="time-schedule" type="tns:ScheduleEventType"/>
-      <xsd:element name="corridor-event" type="tns:CorridorEventType"/>
-    </xsd:choice>
-  </xsd:complexType>
+    <xsd:complexType name="EventType">
+        <xsd:choice>
+            <xsd:element name="sensor-update" type="tns:SensorEventType" />
+            <xsd:element name="junction-event" type="tns:JunctionEventType" />
+            <xsd:element name="time-schedule" type="tns:ScheduleEventType" />
+            <xsd:element name="corridor-event" type="tns:CorridorEventType" />
+        </xsd:choice>
+    </xsd:complexType>
 
-  <xsd:complexType name="SensorEventType">
-    <xsd:attribute name="sensor-id" type="xsd:int"/>
-    <xsd:attribute name="approach-id" type="xsd:int"/>
-    <xsd:attribute name="junction-id" type="xsd:int"/>
-    <xsd:attribute name="vehicle-count-min" type="xsd:int"/>
-    <xsd:attribute name="vehicle-count-max" type="xsd:int"/>
-  </xsd:complexType>
+    <xsd:complexType name="SensorEventType">
+        <xsd:attribute name="sensor-id" type="xsd:int" />
+        <xsd:attribute name="approach-id" type="xsd:int" />
+        <xsd:attribute name="junction-id" type="xsd:int" />
+        <xsd:attribute name="vehicle-count-min" type="xsd:int" />
+        <xsd:attribute name="vehicle-count-max" type="xsd:int" />
+    </xsd:complexType>
 
-  <xsd:complexType name="JunctionEventType">
-    <xsd:attribute name="junction-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="event-type" type="tns:JunctionEventTypeEnum"/>
-  </xsd:complexType>
+    <xsd:complexType name="JunctionEventType">
+        <xsd:attribute name="junction-id" type="xsd:int" use="required" />
+        <xsd:attribute name="event-type" type="tns:JunctionEventTypeEnum" />
+    </xsd:complexType>
 
-  <xsd:simpleType name="JunctionEventTypeEnum">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="phase-change"/>
-      <xsd:enumeration value="queue-overflow"/>
-      <xsd:enumeration value="emergency"/>
-      <xsd:enumeration value="manual-override"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    <xsd:simpleType name="JunctionEventTypeEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="phase-change" />
+            <xsd:enumeration value="queue-overflow" />
+            <xsd:enumeration value="emergency" />
+            <xsd:enumeration value="manual-override" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
-  <xsd:complexType name="ScheduleEventType">
-    <xsd:attribute name="cron" type="xsd:string"/>
-    <xsd:attribute name="interval-seconds" type="xsd:int"/>
-    <xsd:attribute name="time-range-start" type="xsd:string"/>
-    <xsd:attribute name="time-range-end" type="xsd:string"/>
-  </xsd:complexType>
+    <xsd:complexType name="ScheduleEventType">
+        <xsd:attribute name="cron" type="xsd:string" />
+        <xsd:attribute name="interval-seconds" type="xsd:int" />
+        <xsd:attribute name="time-range-start" type="xsd:string" />
+        <xsd:attribute name="time-range-end" type="xsd:string" />
+    </xsd:complexType>
 
-  <xsd:complexType name="CorridorEventType">
-    <xsd:attribute name="corridor-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="event-type" type="tns:CorridorEventTypeEnum"/>
-  </xsd:complexType>
+    <xsd:complexType name="CorridorEventType">
+        <xsd:attribute name="corridor-id" type="xsd:int" use="required" />
+        <xsd:attribute name="event-type" type="tns:CorridorEventTypeEnum" />
+    </xsd:complexType>
 
-  <xsd:simpleType name="CorridorEventTypeEnum">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="congestion-detected"/>
-      <xsd:enumeration value="clear"/>
-      <xsd:enumeration value="emergency-vehicles"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    <xsd:simpleType name="CorridorEventTypeEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="congestion-detected" />
+            <xsd:enumeration value="clear" />
+            <xsd:enumeration value="emergency-vehicles" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
-  <xsd:complexType name="ConditionType">
-    <xsd:choice>
-      <xsd:element name="queue-threshold" type="tns:QueueThresholdType"/>
-      <xsd:element name="time-range" type="tns:TimeRangeType"/>
-      <xsd:element name="junction-mode" type="tns:JunctionModeType"/>
-      <xsd:element name="compound" type="tns:CompoundConditionType"/>
-    </xsd:choice>
-  </xsd:complexType>
+    <xsd:complexType name="ConditionType">
+        <xsd:choice>
+            <xsd:element name="queue-threshold" type="tns:QueueThresholdType" />
+            <xsd:element name="time-range" type="tns:TimeRangeType" />
+            <xsd:element name="junction-mode" type="tns:JunctionModeType" />
+            <xsd:element name="compound" type="tns:CompoundConditionType" />
+        </xsd:choice>
+    </xsd:complexType>
 
-  <xsd:complexType name="QueueThresholdType">
-    <xsd:attribute name="approach-id" type="xsd:int"/>
-    <xsd:attribute name="junction-id" type="xsd:int"/>
-    <xsd:attribute name="threshold" type="xsd:int" use="required"/>
-    <xsd:attribute name="comparison" type="tns:ComparisonEnum" default="gt"/>
-  </xsd:complexType>
+    <xsd:complexType name="QueueThresholdType">
+        <xsd:attribute name="approach-id" type="xsd:int" />
+        <xsd:attribute name="junction-id" type="xsd:int" />
+        <xsd:attribute name="threshold" type="xsd:int" use="required" />
+        <xsd:attribute name="comparison" type="tns:ComparisonEnum" default="gt" />
+    </xsd:complexType>
 
-  <xsd:simpleType name="ComparisonEnum">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="gt"/>
-      <xsd:enumeration value="gte"/>
-      <xsd:enumeration value="lt"/>
-      <xsd:enumeration value="lte"/>
-      <xsd:enumeration value="eq"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    <xsd:simpleType name="ComparisonEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="gt" />
+            <xsd:enumeration value="gte" />
+            <xsd:enumeration value="lt" />
+            <xsd:enumeration value="lte" />
+            <xsd:enumeration value="eq" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
-  <xsd:complexType name="TimeRangeType">
-    <xsd:attribute name="start" type="xsd:string" use="required"/>
-    <xsd:attribute name="end" type="xsd:string" use="required"/>
-    <xsd:attribute name="days" type="xsd:string"/>
-  </xsd:complexType>
+    <xsd:complexType name="TimeRangeType">
+        <xsd:attribute name="start" type="xsd:string" use="required" />
+        <xsd:attribute name="end" type="xsd:string" use="required" />
+        <xsd:attribute name="days" type="xsd:string" />
+    </xsd:complexType>
 
-  <xsd:complexType name="JunctionModeType">
-    <xsd:attribute name="junction-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="mode" type="tns:SignalModeEnum"/>
-  </xsd:complexType>
+    <xsd:complexType name="JunctionModeType">
+        <xsd:attribute name="junction-id" type="xsd:int" use="required" />
+        <xsd:attribute name="mode" type="tns:SignalModeEnum" />
+    </xsd:complexType>
 
-  <xsd:simpleType name="SignalModeEnum">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="DYNAMIC"/>
-      <xsd:enumeration value="PERIODIC"/>
-      <xsd:enumeration value="MANUAL"/>
-      <xsd:enumeration value="ECA_CONTROLLED"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    <xsd:simpleType name="SignalModeEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="DYNAMIC" />
+            <xsd:enumeration value="PERIODIC" />
+            <xsd:enumeration value="MANUAL" />
+            <xsd:enumeration value="ECA_CONTROLLED" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
-  <xsd:complexType name="CompoundConditionType">
-    <xsd:sequence>
-      <xsd:element name="condition" type="tns:ConditionType" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="operator" type="tns:LogicalOperatorEnum" default="and"/>
-  </xsd:complexType>
+    <xsd:complexType name="CompoundConditionType">
+        <xsd:sequence>
+            <xsd:element name="condition" type="tns:ConditionType" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="operator" type="tns:LogicalOperatorEnum" default="and" />
+    </xsd:complexType>
 
-  <xsd:simpleType name="LogicalOperatorEnum">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="and"/>
-      <xsd:enumeration value="or"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    <xsd:simpleType name="LogicalOperatorEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="and" />
+            <xsd:enumeration value="or" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
-  <xsd:complexType name="ActionType">
-    <xsd:choice>
-      <xsd:element name="set-phase-timing" type="tns:SetPhaseTimingActionType"/>
-      <xsd:element name="set-active-phase" type="tns:SetActivePhaseActionType"/>
-      <xsd:element name="enable-corridor-free" type="tns:EnableCorridorFreeActionType"/>
-      <xsd:element name="reset-to-dynamic" type="tns:ResetToDynamicActionType"/>
-      <xsd:element name="set-mode" type="tns:SetModeActionType"/>
-      <xsd:element name="adjust-green-time" type="tns:AdjustGreenTimeActionType"/>
-    </xsd:choice>
-  </xsd:complexType>
+    <xsd:complexType name="ActionType">
+        <xsd:choice>
+            <xsd:element name="set-phase-timing" type="tns:SetPhaseTimingActionType" />
+            <xsd:element name="set-active-phase" type="tns:SetActivePhaseActionType" />
+            <xsd:element name="enable-corridor-free" type="tns:EnableCorridorFreeActionType" />
+            <xsd:element name="reset-to-dynamic" type="tns:ResetToDynamicActionType" />
+            <xsd:element name="set-mode" type="tns:SetModeActionType" />
+            <xsd:element name="adjust-green-time" type="tns:AdjustGreenTimeActionType" />
+        </xsd:choice>
+    </xsd:complexType>
 
-  <xsd:complexType name="SetPhaseTimingActionType">
-    <xsd:attribute name="phase-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="green-time" type="xsd:int" use="required"/>
-    <xsd:attribute name="yellow-time" type="xsd:int"/>
-    <xsd:attribute name="red-time" type="xsd:int"/>
-    <xsd:attribute name="is-active" type="xsd:boolean"/>
-  </xsd:complexType>
+    <xsd:complexType name="SetPhaseTimingActionType">
+        <xsd:attribute name="phase-id" type="xsd:int" use="required" />
+        <xsd:attribute name="green-time" type="xsd:int" use="required" />
+        <xsd:attribute name="yellow-time" type="xsd:int" />
+        <xsd:attribute name="red-time" type="xsd:int" />
+        <xsd:attribute name="is-active" type="xsd:boolean" />
+    </xsd:complexType>
 
-  <xsd:complexType name="SetActivePhaseActionType">
-    <xsd:attribute name="approach-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="green-time" type="xsd:int" default="30"/>
-    <xsd:attribute name="junction-id" type="xsd:int"/>
-  </xsd:complexType>
+    <xsd:complexType name="SetActivePhaseActionType">
+        <xsd:attribute name="approach-id" type="xsd:int" use="required" />
+        <xsd:attribute name="green-time" type="xsd:int" default="30" />
+        <xsd:attribute name="junction-id" type="xsd:int" />
+    </xsd:complexType>
 
-  <xsd:complexType name="EnableCorridorFreeActionType">
-    <xsd:attribute name="corridor-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="green-time" type="xsd:int" default="60"/>
-    <xsd:attribute name="exclude-junctions" type="xsd:string"/>
-  </xsd:complexType>
+    <xsd:complexType name="EnableCorridorFreeActionType">
+        <xsd:attribute name="corridor-id" type="xsd:int" use="required" />
+        <xsd:attribute name="green-time" type="xsd:int" default="60" />
+        <xsd:attribute name="exclude-junctions" type="xsd:string" />
+    </xsd:complexType>
 
-  <xsd:complexType name="ResetToDynamicActionType">
-    <xsd:attribute name="junction-id" type="xsd:int"/>
-    <xsd:attribute name="corridor-id" type="xsd:int"/>
-  </xsd:complexType>
+    <xsd:complexType name="ResetToDynamicActionType">
+        <xsd:attribute name="junction-id" type="xsd:int" />
+        <xsd:attribute name="corridor-id" type="xsd:int" />
+    </xsd:complexType>
 
-  <xsd:complexType name="SetModeActionType">
-    <xsd:attribute name="junction-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="mode" type="tns:SignalModeEnum" use="required"/>
-  </xsd:complexType>
+    <xsd:complexType name="SetModeActionType">
+        <xsd:attribute name="junction-id" type="xsd:int" use="required" />
+        <xsd:attribute name="mode" type="tns:SignalModeEnum" use="required" />
+    </xsd:complexType>
 
-  <xsd:complexType name="AdjustGreenTimeActionType">
-    <xsd:attribute name="approach-id" type="xsd:int" use="required"/>
-    <xsd:attribute name="adjustment-seconds" type="xsd:int" use="required"/>
-    <xsd:attribute name="min-green" type="xsd:int" default="10"/>
-    <xsd:attribute name="max-green" type="xsd:int" default="120"/>
-  </xsd:complexType>
+    <xsd:complexType name="AdjustGreenTimeActionType">
+        <xsd:attribute name="approach-id" type="xsd:int" use="required" />
+        <xsd:attribute name="adjustment-seconds" type="xsd:int" use="required" />
+        <xsd:attribute name="min-green" type="xsd:int" default="10" />
+        <xsd:attribute name="max-green" type="xsd:int" default="120" />
+    </xsd:complexType>
 
 </xsd:schema>
