@@ -1,49 +1,49 @@
 [
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/main.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/main.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/main.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/main.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/main.cpp",
   "output": "CMakeFiles/watcher.dir/src/main.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/config.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/config.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/config.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/config.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/config.cpp",
   "output": "CMakeFiles/watcher.dir/src/config.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/connection.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/connection.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/connection.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/connection.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/connection.cpp",
   "output": "CMakeFiles/watcher.dir/src/connection.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/listener.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/listener.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/listener.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/listener.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/listener.cpp",
   "output": "CMakeFiles/watcher.dir/src/listener.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/dispatcher.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/dispatcher.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/dispatcher.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/dispatcher.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/dispatcher.cpp",
   "output": "CMakeFiles/watcher.dir/src/dispatcher.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/rules/rule_loader.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/rules/rule_loader.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/rules/rule_loader.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/rules/rule_loader.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/rules/rule_loader.cpp",
   "output": "CMakeFiles/watcher.dir/src/rules/rule_loader.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/handlers/sensor_handler.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/sensor_handler.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/handlers/sensor_handler.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/sensor_handler.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/sensor_handler.cpp",
   "output": "CMakeFiles/watcher.dir/src/handlers/sensor_handler.cpp.o"
 },
 {
   "directory": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher",
-  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/opt/homebrew/opt/postgresql@17/include/postgresql -I/opt/homebrew/opt/postgresql@17/include/postgresql/server -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/handlers/signal_handler.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/signal_handler.cpp",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++  -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-src/include -I/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-src/src -isystem /opt/homebrew/opt/postgresql@17/include/postgresql -isystem /opt/homebrew/opt/postgresql@17/include/postgresql/server -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -o CMakeFiles/watcher.dir/src/handlers/signal_handler.cpp.o -c /Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/signal_handler.cpp",
   "file": "/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/src/handlers/signal_handler.cpp",
   "output": "CMakeFiles/watcher.dir/src/handlers/signal_handler.cpp.o"
 },

@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/cmake_install.cmake",
-		"/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/json-build/cmake_install.cmake",
-		"/Users/dheerajmurthy/Downloads/IIITB/sem6/dm/project/watcher/_deps/pugixml-build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
